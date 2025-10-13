@@ -233,11 +233,11 @@ systemctl restart docker
 
 
 # 小庄的收藏室（我的搜索脚本应用-官方订阅仓库）
-https://github.com/18476305640/xiaozhuang
+https://github.com/My-Search/official-subscribe
 ----
 > [WORK](https://share.feijipan.com/s/jdHIqIp5)
 > [导入WordPress](https://my-search.github.io/posts-import-wordpress/)
-> [作者编辑](https://github.dev/18476305640/xiaozhuang)
+> [作者编辑](https://github.dev/My-Search/official-subscribe)
 
 # LINUX DO论坛（“Linux Do 是一个多样化的社区，用户可以在这里讨论技术问题、分享软件、交流经验以及探索其他感兴趣的话题。”）
 https://linux.do/
