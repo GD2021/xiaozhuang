@@ -49,17 +49,15 @@ https://search.censys.io/
 https://fofa.info/
 
 
-# [推荐] 微零微(一个命令永久激活windows)
-https://v0v.bid/
+# [推荐] Microsoft-Activation-Scripts(一个命令永久激活windows / 也可激活office)
+https://github.com/massgravel/Microsoft-Activation-Scripts
 ----
-或：
-```bash
-#按 Win+R 打开运行窗口，输入 CMD，按 Ctrl+Shift+Enter 以管理员身份打开命令提示符执行以下命令
-slmgr /ipk W269N-WFGWX-YVC9B-4J6C9-T83GX && slmgr /skms kms.03k.org && slmgr /ato
+```powershell
+#powershell运行，输入“1”激活
+irm https://get.activated.win | iex
 ```
-
 其它：
-- [云萌软件激活](https://github.com/TGSAN/CMWTAT_Digital_Edition)
+- [推荐：云萌软件激活](https://github.com/TGSAN/CMWTAT_Digital_Edition)
 - [小可博客的windows7激活工具（已实测过）](https://www.qkeke.com/archives/1879.html)
 - [DragonKMS(次选激活工具office/windows)](http://www.yishimei.cn/network/319.html)
 
