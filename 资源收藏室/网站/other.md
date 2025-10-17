@@ -55,6 +55,9 @@ https://github.com/massgravel/Microsoft-Activation-Scripts
 ```powershell
 #powershell运行，输入“1”激活
 irm https://get.activated.win | iex
+#检查windows是否永久激活
+slmgr.vbs -xpr
+#卸载产品密钥：slmgr /upk
 ```
 其它：
 - [推荐：云萌软件激活](https://github.com/TGSAN/CMWTAT_Digital_Edition)
