@@ -231,6 +231,7 @@ systemctl restart docker
 其它镜像拉取加速：
 - [拉取镜像到自己的Harbor阿里云中](https://github.com/tech-shrimp/docker_image_pusher)
 - [借助CloudFlare自建](https://github.com/cmliu/CF-Workers-docker.io)：里面有视频教程教怎么自建，找到一个公益的 `docker.721579.xyz`
+- 使用任意代理镜像，最终拉取不含代理镜像路径脚本：`img="docker.721579.xyz/rabbitmq:3.12-management" && docker pull "$img" && new_tag="${img#*/}" && docker tag "$img" "$new_tag" && docker rmi "$img"`
 
 
 # 小庄的收藏室（我的搜索脚本应用-官方订阅仓库）
