@@ -401,6 +401,7 @@ https://hipc.cn/
 # OpenWrt(可以给家用路由器安装OpenWrt提高可玩性，不爱折腾的不推荐)
 https://openwrt.org/zh/start
 ----
+> [支持的设备](https://openwrt.org/toh/views/toh_admin_fw-pkg-download)
 > [以一个小米路由器为例](https://www.cnblogs.com/zhuangjie/p/16993568.html)
 
 
