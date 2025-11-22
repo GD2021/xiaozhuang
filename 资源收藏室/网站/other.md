@@ -277,10 +277,10 @@ https://juejin.cn[[/search?query={keyword}]]
 # [h'程序员']SiliconFlow | 硅基流动（为开发者快速统一接入知名AI模型,模型有免费/付费的模型）
 https://siliconflow.cn/zh-cn/
 
-# Aistudio AI（谷歌出品的AI，可API调用但不兼容openAI API）
-https://aistudio.google.com/
+# Gemini-AI (Google新出品的geimin3的出现彻底超神)
+https://gemini.google.com/
 ----
-[gemini](https://gemini.google.com/)
+> [Aistudio AI](https://aistudio.google.com/ "可使用Gemini3，可API调用但不兼容openAI API")
 
 # Mistral AI（法国的AI产品，不限地域/网络，有免费的模型支持OpenAI API方式调用 #chatGPT替代）
 https://chat.mistral.ai/chat
