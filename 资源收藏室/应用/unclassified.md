@@ -118,6 +118,13 @@ docker logs <cloudreve容器id>
 3、web地址-登录
 http://<服务器ip>:5212/
 
+# NetcccyunPan(彩虹外链网盘-开源项目源码)
+https://github.com/netcccyun/pan
+----
+别人部署的
+https://pan.aa53.cn/
+https://pan.tenire.com/
+
 # Folo(多平台RSS订阅阅读器，支持RSSHub！)
 https://github.com/RSSNext/Folo
 ----
