@@ -314,6 +314,9 @@ https://www.microsoft.com/zh-cn/software-download
 - [xitongku(免费提供MSDN原版Windows系统和原版office下载和与安装指引的网站)](https://www.xitongku.com/)
 - [我告诉你-新版（下载系统镜像下载方式是ed2k或bt，需要登录）](https://next.itellyou.cn/)
 
+自带功能：
+- win+G: 截图、录屏（直接win+alt+r）
+
 其它：
 - [右键改回windows10样式](https://cdn.jsdelivr.net/gh/18476305640/typora@master/images/2022/10/27/Windows11%E4%BF%AE%E6%94%B9%E5%8F%B3%E9%94%AE%E8%8F%9C%E5%8D%95%E6%A8%A1%E5%BC%8F.zip)
 - 无效引导删除：Ctrl+R 输出 msconfig 回车
