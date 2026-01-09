@@ -97,6 +97,7 @@ https://bandwagonhost.com/
 - [onetechcloud](https://www.onetechcloud.com/)：最便宜的双ISP VPS，还没试。
 - [云悠](https://yunyoo.cc/)：性价比-快车道/精品线路
 
+- [AaITR](https://www.aaitr.com/)：高性价比住宅IP家宽 & NAT机
 - nube ：速度可以（按量计费），延迟还不错，体验稳定性很差！IP经常不行会掉或墙，删掉被墙的VPS扣4.5元。
 
 
