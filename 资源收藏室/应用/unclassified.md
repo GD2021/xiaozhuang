@@ -504,6 +504,14 @@ bash -c "$(curl -sSL https://raw.githubusercontent.com/18476305640/xiaozhuang/re
 # rsync-change-push（“rsync文件变化同步，主动向备份服务器推送差异文件” #文件同步 #数据备份 #容灾）
 https://github.com/My-Search/rsync-change-push
 
+# Xray(快速使用xray命令创建代理节点, 如socks节点)
+https://github.com/233boy/Xray
+----
+一键命令：
+```bash
+bash <(wget -qO- -o- https://github.com/233boy/Xray/raw/main/install.sh)
+```
+
 # Xboard | NewV2Board (“机场”管理销售面板)
 https://github.com/cedar2025/Xboard
 ----
