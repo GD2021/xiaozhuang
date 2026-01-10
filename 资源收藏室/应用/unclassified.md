@@ -350,6 +350,8 @@ https://www.easytier.top/
 ```bash
 wget -O /tmp/easytier.sh "https://raw.githubusercontent.com/EasyTier/EasyTier/main/script/install.sh" && bash /tmp/easytier.sh install
 ```
+其它：
+- [easytier-helper](https://github.com/My-Search/easytier-helper)：快速与一台公网主机建立虚拟网络
 
 Linux使用：
 -i 192.168.100.103/24  是设置的静态ip
@@ -728,9 +730,12 @@ https://github.com/Aurora-Admin-Panel/deploy
 食用示例：原理图/搭建XB中转节点
 ![](https://cdn.jsdelivr.net/gh/18476305640/typora@master/images/2025/02/02/1738473771489.png)
 
+自己快速创建转发：[easy-forward](https://github.com/My-Search/easy-forward)
 其它转发：下面两个属于大用户群体的转发，特殊时期不能用，高峰时间体验一般，没有聊天的群组只有通知，没有保障
 - [NNR中转服务](https://nnr.moe/)
 - [GoRelay中转服务](https://gorelay.net/)：不尊重低级用户
+
+
 
 # Virtualizor(“母鸡开小鸡”，创建与管理VPS，人人都是IDC/oneman)
 https://www.virtualizor.com
