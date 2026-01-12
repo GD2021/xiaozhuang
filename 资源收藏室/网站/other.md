@@ -281,6 +281,7 @@ https://siliconflow.cn/zh-cn/
 # Gemini-AI (Google新出品的geimin3的出现彻底超神)
 https://gemini.google.com/
 ----
+> [Stitch](https://stitch.withgoogle.com/ "快速生成项目原型")
 > [Aistudio AI](https://aistudio.google.com/ "可使用Gemini3，可API调用但不兼容openAI API")
 
 # Mistral AI（法国的AI产品，不限地域/网络，有免费的模型支持OpenAI API方式调用 #chatGPT替代）
