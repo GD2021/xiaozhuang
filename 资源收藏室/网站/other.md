@@ -519,3 +519,5 @@ https://my-search.github.io/sticky-notes/
 # [h'程序员']UIverse（"适用于任何项目的开源 UI 元素"，效果-html-css）
 https://uiverse.io/
 
+# Zread（生成或查看已经生成的github仓库说明文档）
+https://zread.ai/
