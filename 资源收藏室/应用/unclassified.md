@@ -128,6 +128,8 @@ https://pan.tenire.com/
 # Folo(多平台RSS订阅阅读器，支持RSSHub！)
 https://github.com/RSSNext/Folo
 ----
+> [收集的RSSHub服务状态](https://status.uri.wang/status/rsshub)
+
 其它：
 - [Feedflow](https://www.feedflow.dev/)（RSS多端订阅阅读工具，唯一不好是不没有支持RSSHub，又因为RSSHub官方或三方服务器不稳定，使得体验不好）
 
