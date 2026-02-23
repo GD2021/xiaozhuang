@@ -1105,3 +1105,8 @@ docker-compose down #关闭进行修改上面初始出来的配置
 点击nginxUI web面板的左侧“网站管理”->“添加站点”，此时只需要填`名称`与`server_name`即可，然后保存，后面再使用`高级模式`编辑即可。
 ![](https://cdn.jsdelivr.net/gh/18476305640/typora@master/images/2025/08/06/1754463803254.png)
 
+
+# next-ai-draw-io（使用AI加持的draw.io,自动生成各种图）
+https://github.com/DayuanJiang/next-ai-draw-io
+----
+[docker部署](https://github.com/DayuanJiang/next-ai-draw-io/blob/main/docs/cn/docker.md)
