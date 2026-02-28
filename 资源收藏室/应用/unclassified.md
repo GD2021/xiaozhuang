@@ -1147,4 +1147,167 @@ openclaw gateway start
 
 三方管理脚本（模型添加/切换）：bash <(curl -sL kejilion.sh) app openclaw
 
+部署docker-compsoe部署
+- 主要看：https://cloud.tencent.com/developer/article/2626270
+- 次要看：https://linux.do/t/topic/1636463
+
+大概流程：
+
+mkdir {config,data}
+chown -R 1000:1000 {config,data}
+
+docker-compose.yml
+```
+version: '3.8'
+
+services:
+  openclaw-gateway:
+    image: alpine/openclaw:latest
+    container_name: openclaw-gateway
+    restart: unless-stopped
+    ports:
+      - "18789:18789"
+    volumes:
+      - ./data/config:/home/node/.openclaw
+      - ./data/data:/home/node/clawd
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    #environment:
+    #  - HTTP_PROXY=http://192.168.1.206:2081
+    #  - HTTPS_PROXY=http://192.168.1.206:2081
+    #  - NO_PROXY="localhost,127.0.0.1,::1"
+    shm_size: 2g
+    command: node /app/dist/index.js gateway --port 18789
+
+  openclaw-cli:
+    image: alpine/openclaw:latest
+    container_name: openclaw-cli
+    network_mode: "service:openclaw-gateway"
+    volumes:
+      - ./data/config:/home/node/.openclaw
+      - ./data/data:/home/node/clawd
+    entrypoint: ["node", "dist/index.js"]
+```
+走流程，选手动
+docker compose run --rm -it openclaw-cli onboard
+
+配模型（不要使用opencodezen的模型，否则电报机器人可能返回`⚠️ API rate limit reached. Please try again later.`都无法判断是好对于初学者）
+vim data/config/openclaw.json
+如何配置，就是配{models、agents}这两块。
+```
+{
+    "models": {
+    "mode": "merge",
+    "providers": {
+      "bailian": {
+        "baseUrl": "https://coding.dashscope.aliyuncs.com/v1",
+        "apiKey": "你的api-key",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "qwen3.5-plus",
+            "name": "qwen3.5-plus",
+            "reasoning": false,
+            "input": ["text", "image"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 1000000,
+            "maxTokens": 65536
+          },
+          {
+            "id": "qwen3-max-2026-01-23",
+            "name": "qwen3-max-2026-01-23",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 262144,
+            "maxTokens": 65536
+          },
+          {
+            "id": "qwen3-coder-next",
+            "name": "qwen3-coder-next",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 262144,
+            "maxTokens": 65536
+          },
+          {
+            "id": "qwen3-coder-plus",
+            "name": "qwen3-coder-plus",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 1000000,
+            "maxTokens": 65536
+          },
+          {
+            "id": "MiniMax-M2.5",
+            "name": "MiniMax-M2.5",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 204800,
+            "maxTokens": 131072
+          },
+          {
+            "id": "glm-5",
+            "name": "glm-5",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 202752,
+            "maxTokens": 16384
+          },
+          {
+            "id": "glm-4.7",
+            "name": "glm-4.7",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 202752,
+            "maxTokens": 16384
+          },
+          {
+            "id": "kimi-k2.5",
+            "name": "kimi-k2.5",
+            "reasoning": false,
+            "input": ["text", "image"],
+            "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 },
+            "contextWindow": 262144,
+            "maxTokens": 32768
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "bailian/qwen3.5-plus"
+      },
+      "models": {
+        "bailian/qwen3.5-plus": {},
+        "bailian/qwen3-max-2026-01-23": {},
+        "bailian/qwen3-coder-next": {},
+        "bailian/qwen3-coder-plus": {},
+        "bailian/MiniMax-M2.5": {},
+        "bailian/glm-5": {},
+        "bailian/glm-4.7": {},
+        "bailian/kimi-k2.5": {}
+      }
+    }
+  },
+}
+```
+关联电报：
+docker compose run --rm openclaw-cli pairing approve telegram <电报code>
+
+webui能让域名访问：
+docker compose run --rm openclaw-cli config set gateway.controlUi.allowedOrigins '["https://openclaw.721579.xyz"]' --strict-json
+
+让前端能访问：
+docker compose run --rm openclaw-cli devices list
+docker compose run --rm openclaw-cli devices approve <request-id>
+然后将<request-id>放在页面`概览`->`网关访问`->`网关令牌`, 这样这个设备就可以正常访问了
+
 
