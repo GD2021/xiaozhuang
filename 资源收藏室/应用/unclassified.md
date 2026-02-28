@@ -1110,3 +1110,41 @@ docker-compose down #关闭进行修改上面初始出来的配置
 https://github.com/DayuanJiang/next-ai-draw-io
 ----
 [docker部署](https://github.com/DayuanJiang/next-ai-draw-io/blob/main/docs/cn/docker.md)
+
+# OpenClaw（“OpenClaw | 小龙虾 是一个开源的个人AI 助手平台，支持通过多种消息渠道与AI 交互。 通过配置可接入阿里云百炼的千问系列模型。 OpenClaw 原名Moltbot/Clawdbot”）
+https://openclaw.ai/
+----
+## VPS安装OpenClaw教程
+#添加一个普通用户
+sudo adduser openclaw
+sudo usermod -aG sudo openclaw
+su openclaw
+// -- 可能要输入密码
+echo 'export PATH="/home/openclaw/.npm-global/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
+echo 'export XDG_RUNTIME_DIR=/run/user/$(id -u)' >> ~/.bashrc && source ~/.bashrc
+echo 'cd ~' >> ~/.bashrc && source ~/.bashrc
+source ~/.bashrc
+
+连接电报: 在电报搜索BotFather创建机器人(会生成`token`,后面用到)
+
+
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+◇  I understand this is personal-by-default and shared/multi-user use requires lock-down. Continue?
+│  Yes
+│
+◇  Onboarding mode
+│  QuickStart
+
+
+后点开机器人开始会话，向创建的机器人发送 /start ，机器人会发code （如：2SHABEEZ），然后在终端执行：`openclaw pairing approve telegram <code>`
+
+systemctl --user status
+openclaw gateway install
+openclaw gateway start
+
+注意启动后一段时间，机器人才有感应~~~
+
+三方管理脚本（模型添加/切换）：bash <(curl -sL kejilion.sh) app openclaw
+
+
