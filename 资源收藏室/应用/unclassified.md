@@ -283,7 +283,6 @@ https://chat.openai.com/chat
 
 使用chatGPT作为搜索引擎？[安装浏览器插件](https://chromewebstore.google.com/detail/chatgpt-search/ejcfepkfckglbgocfkanmcdngdijcgld)
 
-[RawChat](https://chatgptplus.cn/)(可免费chatGPT4，不太稳定)
 
 ## 客户端软件下载
 [官方客户端-官方下载](https://openai.com/chatgpt/download/)    |    [官方客户端-三方下载（因为chatgpt官方限制存在无法安装的情况）](https://app.nofwl.com/zh-CN/chatgpt/install)
@@ -291,6 +290,10 @@ https://chat.openai.com/chat
 
 ## 其它补充
 [chatGPT Key(直达链接)](https://platform.openai.com/account/api-keys)  |  [查看KEY额度](https://www.krseo.com/check-gpt-api.html)
+
+# OpenWebUI(自部署一款类chatGPT官网的AI模型使用界面，（支持Ollama、OpenAI API等）)
+https://github.com/open-webui/open-webui
+
 
 # YouTube（Gooogle旗下的全球最大的视频搜索和分享平台）
 https://www.youtube.com/
