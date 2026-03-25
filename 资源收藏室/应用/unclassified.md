@@ -291,8 +291,12 @@ https://chat.openai.com/chat
 ## 其它补充
 [chatGPT Key(直达链接)](https://platform.openai.com/account/api-keys)  |  [查看KEY额度](https://www.krseo.com/check-gpt-api.html)
 
-# OpenWebUI(自部署一款类chatGPT官网的AI模型使用界面，（支持Ollama、OpenAI API等）)
-https://github.com/open-webui/open-webui
+# lobehub(自部署一款类chatGPT官网的AI模型使用界面，#AIWebUI)
+https://github.com/lobehub/lobehub
+----
+类似：
+[OpenWebUI](https://github.com/open-webui/open-webui)：UI虽然过得去，但UX就是一坨，docker-compose还占用很多很多，纯垃
+
 
 
 # YouTube（Gooogle旗下的全球最大的视频搜索和分享平台）
