@@ -1054,6 +1054,11 @@ https://github.com/kekingcn/kkFileView
 ----
 > [如何使用？](https://kkview.cn/zh-cn/docs/production.html)
 > [在线体验预览服务](https://file.kkview.cn/)
+> 在html前端部署vue后配置了nginx文件前缀转发到后端但不生效，那是被默认存在的配置覆盖了，需要将其注释方可生效；
+> 图片上传在本地能上传，在服务器上上传失败？那是你没有以root身份运行java程序，导致没有权限无法创建文件；
+> 在云服务器开放了端口，但仍无法访问？那是因为宝塔的安全中没有放行，也需要一起开放才能访问。
+> 可以在启动时宝塔也能快捷指定启动springboot配置。
+> 不一定要域名才能访问宝塔运行的项目，ip也可以；
 
 # NginxUI(“Nginx UI 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 单机和集群节点的管理和配置。 它提供实时服务器运行数据、Nginx 性能监控、ChatGPT 助手、支持大模型代码补全的代码编辑器、 一键部署 Let's Encrypt 证书的自动续签以及用户友好的网站配置编辑工具。此外，Nginx UI 还提供了在线访问 Nginx 日志、配置文件的自动测试和重载、网络终端、深色模式和自适应网页设计等功能。 Nginx UI 采用 Go 和 Vue 构建，确保在管理 Nginx 服务器时提供无缝高效的体验。”)
 https://nginxui.com/zh_CN/
