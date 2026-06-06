@@ -175,6 +175,8 @@ https://ngrok.com/
 4、点击`ngrokStart.bat`运行，就启动了内网穿透服务了。
 
 ## 其它内网穿透
+内网穿透间区别介绍，内网穿透按配置类型有两种，一种是通过web来决定客户端启动后代理哪个端口（nps、natapp、Cpolar），另一个是由客户端自己配置来决定（frp、ngrok）。
+
 
 <details> <summary>小米球ngrok(固定的域名，支持http/https，需要实名费用0.5元，感觉值得)</summary>
 1、[下载客户端](https://pan.baidu.com/s/1iv8D2AeqynRZ8aDizITBGg?pwd=tcix#list/path=%2F)
@@ -251,6 +253,9 @@ webServer.user = "admin"
 </details>
 
 [nps-内网穿透自建服务教程](https://www.cnblogs.com/zhuangjie/p/16294398.html)
+nps说明与docker部署
+- 说明：nps有这些端口，`http_proxy_port 80`/`https_proxy_port 443`是在使用域名方式内网穿透时使用，bridge_port端口是client连接server的接口（注意如果使用域名，域名不要使用cf黄云，否则连不上）、web_port是面板的端口，如果是创建普通的内网穿透（创建后会分配端口，所以就不需要http_proxy_port、https_proxy_port，nginx时只需要用户到nginx使用nginx上的证书，然后nginx到docker上的nps使用http_proxy_port,就用不到这个https_proxy_port）。
+nps面板的登录账号在nps.conf上的web_username、web_password。
 
 
 # Cpolar(稳定的内网穿透工具，可免费使用多个的随机固定域名的内网穿透，免费版应该是有速度限制的)
