@@ -257,6 +257,128 @@ nps说明与docker部署
 - 说明：nps有这些端口，`http_proxy_port 80`/`https_proxy_port 443`是在使用域名方式内网穿透时使用，bridge_port端口是client连接server的接口（注意如果使用域名，域名不要使用cf黄云，否则连不上）、web_port是面板的端口，如果是创建普通的内网穿透（创建后会分配端口，所以就不需要http_proxy_port、https_proxy_port，nginx时只需要用户到nginx使用nginx上的证书，然后nginx到docker上的nps使用http_proxy_port,就用不到这个https_proxy_port）。
 nps面板的登录账号在nps.conf上的web_username、web_password。
 
+docker-compose.yml
+```yml
+version: '3.8'
+
+services:
+  nps:
+    image: duan2001/nps
+    container_name: nps
+    restart: always
+    network_mode: host
+    volumes:
+      - ./conf:/conf
+```
+conf/nps.conf
+```conf
+appname = nps
+#Boot mode(dev|pro)
+runmode = dev
+
+#HTTP(S) proxy port, no startup if empty
+http_proxy_ip=0.0.0.0
+http_proxy_port=20080
+https_proxy_port=20443
+https_just_proxy=true
+#default https certificate setting
+https_default_cert_file=conf/server.pem
+https_default_key_file=conf/server.key
+
+##bridge
+bridge_type=tcp
+bridge_port=28024
+bridge_ip=0.0.0.0
+
+#Public password, which clients can use to connect to the server
+#After the connection, the server will be able to open relevant ports and parse related domain names according to its own configuration file.
+public_vkey=123
+
+#Traffic data persistence interval(minute)
+#Ignorance means no persistence
+#flow_store_interval=1
+
+#log level LevelEmergency->0  LevelAlert->1 LevelCritical->2 LevelError->3 LevelWarning->4 LevelNotice->5 LevelInformational->6 LevelDebug->7
+log_level=7
+#log_path=nps.log
+
+#Whether to restrict IP access, true or false or ignore
+#ip_limit=true
+
+#p2p
+#p2p_ip=127.0.0.1
+#p2p_port=6000
+
+#web
+web_host=a.o.com
+web_username=zhuangjie
+web_password=gkmzjaznX55..
+web_port = 1198
+web_ip=0.0.0.0
+web_base_url=
+web_open_ssl=false
+web_cert_file=conf/server.pem
+web_key_file=conf/server.key
+#if web under proxy use sub path. like http://host/nps need this.
+#web_base_url=/nps
+
+#Web API unauthenticated IP address(the len of auth_crypt_key must be 16)
+#Remove comments if needed
+#auth_key=test
+auth_crypt_key =1234567812345678
+
+#allow_ports=9001-9009,10001,11000-12000
+
+#Web management multi-user login
+allow_user_login=false
+allow_user_register=false
+allow_user_change_username=false
+
+
+#extension
+allow_flow_limit=false
+allow_rate_limit=false
+allow_tunnel_num_limit=false
+allow_local_proxy=false
+allow_connection_num_limit=false
+allow_multi_ip=false
+system_info_display=false
+
+#cache
+http_cache=false
+http_cache_length=100
+
+#get origin ip
+http_add_origin_header=false
+
+#pprof debug options
+#pprof_ip=0.0.0.0
+#pprof_port=9999
+
+#client disconnect timeout
+disconnect_timeout=60
+
+```
+用户端-域名式的内网穿透
+conf\npc.conf
+```conf
+[common]
+#1. 服务端连接地址与端口
+server_addr=<serverIP>:28024
+conn_type=tcp
+
+#2. 验证密钥（必须与网页端该客户端的 vkey 一致）
+vkey=xxx
+
+#3. 其他性能与安全参数
+auto_reconnection=true
+max_conn=1000
+flow_limit=1000
+rate_limit=1000
+crypt=true
+compress=true
+disconnect_timeout=60
+```
 
 # Cpolar(稳定的内网穿透工具，可免费使用多个的随机固定域名的内网穿透，免费版应该是有速度限制的)
 https://www.cpolar.com/
