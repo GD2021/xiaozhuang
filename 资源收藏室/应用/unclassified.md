@@ -257,6 +257,59 @@ nps说明与docker部署
 - 说明：nps有这些端口，`http_proxy_port 80`/`https_proxy_port 443`是在使用域名方式内网穿透时使用，bridge_port端口是client连接server的接口（注意如果使用域名，域名不要使用cf黄云，否则连不上）、web_port是面板的端口，如果是创建普通的内网穿透（创建后会分配端口，所以就不需要http_proxy_port、https_proxy_port，nginx时只需要用户到nginx使用nginx上的证书，然后nginx到docker上的nps使用http_proxy_port,就用不到这个https_proxy_port）。
 nps面板的登录账号在nps.conf上的web_username、web_password。
 
+- docker部署
+cf - nginx - docker - nps-server
+----
+nginx
+```conf
+# 1. 映射 forward.721579.xyz 到 172.17.0.1:1198
+server {
+    listen 443 ssl;
+    server_name forward.721579.xyz;
+    ssl_certificate /etc/ssl/letsencrypt/live/721579.xyz/fullchain.pem;
+    ssl_certificate_key /etc/ssl/letsencrypt/live/721579.xyz/privkey.pem;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Range $http_range;
+        proxy_set_header If-Range $http_if_range;
+        proxy_redirect off;
+        proxy_pass http://172.17.0.1:1198;
+    }
+}
+# 2. 映射 *.forward.721579.xyz 到 172.17.0.1:20080
+server {
+    listen 443 ssl;
+    server_name *.forward.721579.xyz;
+    ssl_certificate /etc/ssl/letsencrypt/live/721579.xyz/fullchain.pem;
+    ssl_certificate_key /etc/ssl/letsencrypt/live/721579.xyz/privkey.pem;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Range $http_range;
+        proxy_set_header If-Range $http_if_range;
+        proxy_redirect off;
+        proxy_pass http://172.17.0.1:20080;
+    }
+}
+```
+
 docker-compose.yml
 ```yml
 version: '3.8'
@@ -271,6 +324,7 @@ services:
       - ./conf:/conf
 ```
 conf/nps.conf
+请修改下面的web_username/web_password
 ```conf
 appname = nps
 #Boot mode(dev|pro)
@@ -311,8 +365,8 @@ log_level=7
 
 #web
 web_host=a.o.com
-web_username=zhuangjie
-web_password=gkmzjaznX55..
+web_username=username
+web_password=password
 web_port = 1198
 web_ip=0.0.0.0
 web_base_url=
@@ -361,6 +415,7 @@ disconnect_timeout=60
 ```
 用户端-域名式的内网穿透
 conf\npc.conf
+请完善下面的server_addr、vkey（面板上新建一个客户端时填写的“唯一验证密钥”）
 ```conf
 [common]
 #1. 服务端连接地址与端口
