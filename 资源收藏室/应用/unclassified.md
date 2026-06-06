@@ -252,7 +252,9 @@ webServer.user = "admin"
 启动客户端`frpc.exe -c frpc.toml`，访问`test.frp.xxx.yyy` -> 客户端`localhost:5000`
 </details>
 
-[nps-内网穿透自建服务教程](https://www.cnblogs.com/zhuangjie/p/16294398.html)
+<details> <summary>nps-内网穿透自建服务教程（你需要有一个公网的服务器）</summary>
+[nps-普通内网穿透自建服务教程](https://www.cnblogs.com/zhuangjie/p/16294398.html)
+
 nps说明与docker部署
 - 说明：nps有这些端口，`http_proxy_port 80`/`https_proxy_port 443`是在使用域名方式内网穿透时使用，bridge_port端口是client连接server的接口（注意如果使用域名，域名不要使用cf黄云，否则连不上）、web_port是面板的端口，如果是创建普通的内网穿透（创建后会分配端口，所以就不需要http_proxy_port、https_proxy_port，nginx时只需要用户到nginx使用nginx上的证书，然后nginx到docker上的nps使用http_proxy_port,就用不到这个https_proxy_port）。
 nps面板的登录账号在nps.conf上的web_username、web_password。
@@ -264,7 +266,7 @@ cf - nginx - docker - nps-server
 ----
 nginx
 ```conf
-# 1. 映射 forward.721579.xyz 到 172.17.0.1:1198
+#1. 映射 forward.721579.xyz 到 172.17.0.1:1198
 server {
     listen 443 ssl;
     server_name forward.721579.xyz;
@@ -287,7 +289,7 @@ server {
         proxy_pass http://172.17.0.1:1198;
     }
 }
-# 2. 映射 *.forward.721579.xyz 到 172.17.0.1:20080
+#2. 映射 *.forward.721579.xyz 到 172.17.0.1:20080
 server {
     listen 443 ssl;
     server_name *.forward.721579.xyz;
@@ -436,6 +438,8 @@ crypt=true
 compress=true
 disconnect_timeout=60
 ```
+
+</details>
 
 # Cpolar(稳定的内网穿透工具，可免费使用多个的随机固定域名的内网穿透，免费版应该是有速度限制的)
 https://www.cpolar.com/
