@@ -257,6 +257,8 @@ nps说明与docker部署
 - 说明：nps有这些端口，`http_proxy_port 80`/`https_proxy_port 443`是在使用域名方式内网穿透时使用，bridge_port端口是client连接server的接口（注意如果使用域名，域名不要使用cf黄云，否则连不上）、web_port是面板的端口，如果是创建普通的内网穿透（创建后会分配端口，所以就不需要http_proxy_port、https_proxy_port，nginx时只需要用户到nginx使用nginx上的证书，然后nginx到docker上的nps使用http_proxy_port,就用不到这个https_proxy_port）。
 nps面板的登录账号在nps.conf上的web_username、web_password。
 
+ps: cloudflace免费版不支持三级域名使用黄云，所以只使用仅dns。
+
 - docker部署
 cf - nginx - docker - nps-server
 ----
