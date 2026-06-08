@@ -263,7 +263,6 @@ ps: cloudflace免费版不支持三级域名使用黄云，所以只使用仅dns
 
 - docker部署
 cf - nginx - docker - nps-server
-----
 nginx
 ```conf
 #1. 映射 forward.721579.xyz 到 172.17.0.1:1198
@@ -1103,7 +1102,7 @@ ps: 后端统一接口路径为`/api`
 4、部署前端静态项目
 将前端打包为dist，上传到 `/opt/java-project/frontennd/dist`;
 
-创建一个html的项目，需要注意的是这里一定要填入域名，所以提前要做的是添加域名的DNS解析到该台机器。
+创建一个html的项目，需要注意的是这里一定要填入域名，所以提前要做的是添加域名的DNS解析到该台机器。如何使用？
 
 添加 `/api转后端配置` 、 `兼容vue单页面访问配置（所有直接都/index.html来作为入口，不配置刷新就404了，因为只有index.html）`。请看下面html配置文件的配置中的注释。
 
