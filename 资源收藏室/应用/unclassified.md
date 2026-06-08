@@ -1093,6 +1093,8 @@ if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_pa
 进入界面时，选择java环境安装；
 如果系统依赖Redis进去应用商店安装Redis，那在左侧数据库就有Redis了
 
+** 云服务器防火墙放行、宝塔放行端口、使用root角色运行后端才能有权限上传文件、将html服务的图片拦截nginx配置删除。 **
+
 3、部署后端
 在本地电脑将后端配置好生产环境将项目打包为`jar`包，上传到 `/opt/java-project/backend`下面
 ![](https://cdn.jsdelivr.net/gh/18476305640/typora@master/images/2025/07/07/1751853068675.png)
