@@ -921,7 +921,7 @@ v2bx config,json配置要配置两个如果手动配置：`Cores`与`Nodes`,后�
 https://github.com/Aurora-Admin-Panel/deploy
 ----
 > [哆啦A梦-转发面板](https://github.com/bqlpfy/forward-panel)
-> [椰子-流量转发服务](https://nya.trp.sh/ "小转发，一般特殊时期影响没那么大，有群组解决问题快，出问题也有比大转发有保障")
+> [akile-ix转发](https://cdn.akile.ai/)
 
 食用示例：原理图/搭建XB中转节点
 ![](https://cdn.jsdelivr.net/gh/18476305640/typora@master/images/2025/02/02/1738473771489.png)
