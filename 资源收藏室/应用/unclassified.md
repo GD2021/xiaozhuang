@@ -1000,6 +1000,7 @@ VLESS Encryption	❌ 关闭
 路由组	（空）
 绑定服务器	独立部署
 ```
+学习自：https://www.limin.studio/2026/03/16/v2bx-xboard/
 # 极光面板（节点中转管理面板）
 https://github.com/Aurora-Admin-Panel/deploy
 ----
