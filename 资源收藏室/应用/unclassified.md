@@ -915,8 +915,91 @@ v2bx config,json配置要配置两个如果手动配置：`Cores`与`Nodes`,后�
 	]
 }
 ```
+# V2bx
+https://github.com/wyx2685/V2bX-script
+----
+## VLESS+Reality 代理节点（不需要域名证书）
+```bash
+#修复 V2bX 必需文件（必须执行）
+mkdir -p /etc/V2bX && echo "{}" > /etc/V2bX/sing_origin.json
+#安装v2bx
+wget -N https://raw.githubusercontent.com/wyx2685/V2bX-script/master/install.sh && bash install.sh
+# 是否自动生成配置文件？n
 
+#写入 VLESS 节点配置
+#ApiHost：Xboard 面板地址
+#ApiKeyL: 面板通讯密钥
+#NodeID：Xboard 后台的节点ID 必须与面板一致
+echo '{
+  "Log":{"Level":"info"},
+  "Cores":[
+    {
+      "Type":"sing",
+      "Log":{"Level":"info"},
+      "OriginalPath":"/etc/V2bX/sing_origin.json"
+    }
+  ],
+  "Nodes":[
+    {
+      "Core":"sing",
+      "ApiHost":"https://example-api.com",
+      "ApiKey":"YOUR_API_KEY_HERE",
+      "NodeID":1,
+      "NodeType":"vless",
+      "Timeout":30,
+      "ListenIP":"0.0.0.0",
+      "SendIP":"0.0.0.0",
+      "SniffEnabled":true
+    }
+  ]
+}' > /etc/V2bX/config.json
 
+#重启服务
+systemctl restart V2bX
+#查看运行日志
+journalctl -u V2bX.service -f
+```
+面板节点配置
+```txt
+编辑节点 - VLess
+基本信息
+字段	值
+节点名称	美国-V1
+基础倍率	1 ×
+启用动态倍率	❌ 关闭
+流量限制	0 GB（0 表示不限制）
+自定义节点ID	6（选填）
+节点标签	（空，输入后回车添加）
+权限组	私有 · 超级会员 · 高级 · 轻量
+连接配置
+字段	值
+节点地址	你的入口ip
+连接端口	30003（入口端口）
+服务端口	30003
+安全性 (Reality)
+字段	值
+安全性协议	Reality
+伪装站点 (dest)	www.cloudflare.com
+端口 (port)	443
+允许不安全？	❌ 关闭
+私钥 (Private key)	自动生成的
+公钥 (Public key)	自动生成的
+Short ID	自动生成的
+uTLS 指纹伪装
+字段	状态
+uTLS	✅ 启用
+客户端指纹 (uTLS)	Chrome
+传输与流控
+字段	值
+传输协议	TCP（可编辑协议）
+流控	xtls-rprx-vision
+VLESS Encryption	❌ 关闭
+关联配置
+字段	值
+父级节点	无
+路由组	（空）
+绑定服务器	独立部署
+```
 # 极光面板（节点中转管理面板）
 https://github.com/Aurora-Admin-Panel/deploy
 ----
