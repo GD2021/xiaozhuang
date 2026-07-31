@@ -915,7 +915,7 @@ v2bx config,json配置要配置两个如果手动配置：`Cores`与`Nodes`,后�
 	]
 }
 ```
-# V2bx
+# V2bx（xrayr同类项目v2bx，都属于xboard机场面板的后端）
 https://github.com/wyx2685/V2bX-script
 ----
 ## VLESS+Reality 代理节点（不需要域名证书）
@@ -924,7 +924,7 @@ https://github.com/wyx2685/V2bX-script
 mkdir -p /etc/V2bX && echo "{}" > /etc/V2bX/sing_origin.json
 #安装v2bx
 wget -N https://raw.githubusercontent.com/wyx2685/V2bX-script/master/install.sh && bash install.sh
-# 是否自动生成配置文件？n
+#是否自动生成配置文件？n
 
 #写入 VLESS 节点配置
 #ApiHost：Xboard 面板地址
@@ -1001,6 +1001,7 @@ VLESS Encryption	❌ 关闭
 绑定服务器	独立部署
 ```
 学习自：https://www.limin.studio/2026/03/16/v2bx-xboard/
+
 # 极光面板（节点中转管理面板）
 https://github.com/Aurora-Admin-Panel/deploy
 ----
