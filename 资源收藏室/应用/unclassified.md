@@ -64,6 +64,201 @@ https://www.huorong.cn/
 其它提取版：
 [火绒的弹窗拦截功能](https://raw.githubusercontent.com/18476305640/typora/master/images/2023/08/27/%E7%81%AB%E7%BB%92%E5%BC%B9%E7%AA%97%E6%8B%A6%E6%88%AA%E7%8B%AC%E7%AB%8B%E7%89%88%20v5.0.44.8.zip)
 
+# Mihomo（Mihomo代理内核配置UI使用）
+https://github.com/MetaCubeX/mihomo
+----
+以在Ubuntu上安装mihomo+UI
+> 下载学习自：[教程](https://github.com/Hero2633/public_share/blob/main/clash/Ubuntu%2022.04%20Server%20%E9%83%A8%E7%BD%B2%20Mihomo%20(%E9%80%8F%E6%98%8E%E4%BB%A3%E7%90%86)%20%2B%20MetaCubeXD%20%E6%9C%AC%E5%9C%B0%E9%9D%A2%E6%9D%BF%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97.md)
+```bash
+#1、安装mihomo内核
+#下载指定版本的压缩包
+wget https://github.com/MetaCubeX/mihomo/releases/download/v1.19.24/mihomo-linux-amd64-v1.19.24.gz -O mihomo.gz
+#解压文件
+gunzip mihomo.gz
+#移动到系统可执行目录并重命名
+sudo mv mihomo /usr/local/bin/mihomo
+#赋予执行权限
+sudo chmod +x /usr/local/bin/mihomo
+#检查安装是否成功
+mihomo -v
+sudo mkdir -p /etc/mihomo
+#下载依赖的（https://github.com/P3TERX/GeoLite.mmdb）没有他启动不起来，国内又没有程序启动后又自动下载不了，应该手动下载放置为/etc/mihomo/Country.mmdb
+sudo mkdir -p /etc/mihomo && sudo wget -O /etc/mihomo/Country.mmdb "https://github.com/Loyalsoldier/geoip/releases/download/202608060031/Country.mmdb"
+
+#2、下载UI
+cd /etc/mihomo
+#下载最新编译版（版本号请从 GitHub Releases 获取）
+sudo wget https://github.com/MetaCubeX/metacubexd/releases/download/v1.246.3/compressed-dist.tgz -O ui.tgz
+#创建 ui 文件夹并解压
+sudo mkdir -p ui
+sudo tar -xzvf ui.tgz -C ui
+#清理压缩包
+sudo rm ui.tgz
+
+#3、配置文件与合并脚本
+sudo tee /etc/mihomo/fixed.yaml > /dev/null << 'EOF'
+#============================================================
+#fixed.yaml - 固定配置（基础设施 + 手工规则），优先级最高
+#合并时覆盖 sub.yaml 的同名标量/映射；proxies/groups/rules 保留订阅
+#修改后执行: bash /etc/mihomo/merge-config.sh 再重启 mihomo
+#============================================================
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: rule
+log-level: info
+external-controller: 0.0.0.0:9090
+external-ui: /etc/mihomo/ui
+secret: 123456
+tun:
+  enable: true
+  stack: mixed
+  dns-hijack:
+  - any:53
+  auto-route: true
+  auto-detect-interface: true
+  exclude-interface:
+  # 使docker服务可访问，否则docker部署的服务不可被访问（下面5项）
+  - docker0
+  - br-6035b79185f5
+  - br-61bdace07355
+  - br-35f9adfed5e1
+  - br-e138fbc6a6b3
+dns:
+  enable: true
+  ipv6: false
+  default-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  use-hosts: true
+  nameserver:
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+  fallback:
+  - https://doh.dns.sb/dns-query
+  - https://dns.cloudflare.com/dns-query
+  - https://dns.twnic.tw/dns-query
+  - tls://8.8.4.4:853
+  fallback-filter:
+    geoip: true
+    ipcidr:
+    - 240.0.0.0/4
+    - 0.0.0.0/32
+rules:
+#如果你的订阅使用到了国内主机跳（不能走代理，代了代理那你的代理就不可用了）
+#- IP-CIDR,163.223.125.8/32, DIRECT
+#- IP-CIDR,82.41.50.104/32, DIRECT
+#本机ip可选
+#- IP-CIDR,本机IP/32, DIRECT
+EOF
+
+#写入你的订阅yml内容
+touch /etc/mihomo/sub.yaml
+
+#合并脚本
+sudo tee /etc/mihomo/merge-config.sh > /dev/null << 'EOF'
+#!/bin/bash
+# ============================================================
+#merge-config.sh - Mihomo 混合配置合并脚本
+#合并 /etc/mihomo/fixed.yaml（固定配置，优先级最高）
+#与   /etc/mihomo/sub.yaml （订阅动态部分）生成 config.yaml
+#
+#用法: bash /etc/mihomo/merge-config.sh
+#由 mihomo.service 的 ExecStartPre 调用，重启自动合并
+# ============================================================
+set -euo pipefail
+
+MIHOMO_DIR="/etc/mihomo"
+FIXED_FILE="$MIHOMO_DIR/fixed.yaml"
+SUB_FILE="$MIHOMO_DIR/sub.yaml"
+OUT_FILE="$MIHOMO_DIR/config.yaml"
+BACKUP_DIR="$MIHOMO_DIR/backups"
+
+log() { echo "[merge-config] $*"; }
+
+#1. 检查依赖与输入文件
+command -v yq >/dev/null 2>&1 || { echo "[merge-config] ERROR: yq 未安装 (apt install yq 或下载二进制)"; exit 1; }
+[ -f "$FIXED_FILE" ] || { echo "[merge-config] ERROR: 缺少 $FIXED_FILE"; exit 1; }
+[ -f "$SUB_FILE" ]   || { echo "[merge-config] ERROR: 缺少 $SUB_FILE"; exit 1; }
+
+#2. 备份当前生效配置（保留最近 5 份）
+if [ -f "$OUT_FILE" ]; then
+    mkdir -p "$BACKUP_DIR"
+    cp "$OUT_FILE" "$BACKUP_DIR/config.bak.$(date +%Y%m%d%H%M%S)"
+    ls -1t "$BACKUP_DIR"/config.bak.* 2>/dev/null | tail -n +6 | xargs -r rm -f
+fi
+
+#3. 合并（fixed *+ sub：固定标量优先、数组拼接；节点去重、同名策略组合并、规则去重）
+TMP_OUT="$OUT_FILE.tmp"
+yq eval-all '
+  select(fileIndex == 0) *+ select(fileIndex == 1)
+  | .proxies = ([.proxies[]] | unique_by(.name))
+  | .rules = ([.rules[]] | unique)
+  | .["proxy-groups"] = ([.["proxy-groups"][]?] | group_by(.name) | map(.[0] * {"proxies": ([.[].proxies[]] | unique)}))
+' "$FIXED_FILE" "$SUB_FILE" > "$TMP_OUT" || { echo "[merge-config] ERROR: yq 合并失败"; exit 1; }
+
+#4. 语法验证（mihomo -t，30s 超时；GeoIP 下载失败不算错误）
+if command -v timeout >/dev/null 2>&1; then
+    VERIFY_OUT=$(timeout 30 mihomo -d "$MIHOMO_DIR" -t 2>&1) || true
+    if echo "$VERIFY_OUT" | grep -qE "test is successful"; then
+        mv "$TMP_OUT" "$OUT_FILE"
+        log "合并完成，验证通过: $OUT_FILE"
+        exit 0
+    fi
+    if echo "$VERIFY_OUT" | grep -qE "can't download MMDB|can't initial GeoIP" \
+       && ! echo "$VERIFY_OUT" | grep -qE "yaml:|mapping key|unmarshal"; then
+        mv "$TMP_OUT" "$OUT_FILE"
+        log "合并完成（GeoIP 下载失败，配置本身有效）: $OUT_FILE"
+        exit 0
+    fi
+    echo "[merge-config] ERROR: 配置验证失败，保留原配置"
+    echo "$VERIFY_OUT" | tail -20
+    rm -f "$TMP_OUT"
+    exit 1
+else
+    mv "$TMP_OUT" "$OUT_FILE"
+    log "合并完成（未验证）: $OUT_FILE"
+    exit 0
+fi
+EOF
+
+#4、服务管理
+sudo tee /etc/systemd/system/mihomo.service > /dev/null << 'EOF'
+[Unit]
+Description=mihomo Daemon, Another Clash Kernel.
+After=network.target NetworkManager.service systemd-networkd.service iwd.service
+
+[Service]
+Type=simple
+LimitNPROC=500
+LimitNOFILE=1000000
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW CAP_NET_BIND_SERVICE CAP_SYS_TIME CAP_SYS_PTRACE CAP_DAC_READ_SEARCH CAP_DAC_OVERRIDE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW CAP_NET_BIND_SERVICE CAP_SYS_TIME CAP_SYS_PTRACE CAP_DAC_READ_SEARCH CAP_DAC_OVERRIDE
+Restart=always
+#启动前合并 fixed.yaml + sub.yaml 生成 config.yaml（混合配置，重启不变）
+ExecStartPre=/usr/bin/sleep 1s
+ExecStartPre=/bin/bash /etc/mihomo/merge-config.sh
+#默认读取合并的/etc/mihomo/config.json来启动代理
+ExecStart=/usr/local/bin/mihomo -d /etc/mihomo
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+EOF
+#重新加载 systemd 配置
+sudo systemctl daemon-reload
+#启用服务（开机自启）
+sudo systemctl enable mihomo.service
+#启动服务
+sudo systemctl start mihomo.service
+#查看服务状态
+sudo systemctl status mihomo.service
+#启动后访问：http://服务器ip:9090/ui 密码（在/etc/mihomo/fixed.yaml配置的，ip地址记得改为你服务器的ip地址）：123456
+```
+
+
 
 # 国外支付-虚拟卡（chrome插件注册费5美元、自己注册美区AppId与购买Shadowrocket）
 前置知识：
