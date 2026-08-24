@@ -392,8 +392,6 @@ https://github.com/TapXWorld/ChinaTextbook
 # UP云搜 (各网盘资源搜索，最重要的是有蓝奏云，资源新)
 https://www.upyunso.com/[[search.html?keyword={keyword}&pan_channel=lanzou]]
 
-# ManusAI（“ManusAI 是一个全能的通用人工智能代理，能够自主规划、调用工具并安全地执行从编程、研究到创意设计等任何复杂的数字化任务”）
-https://manus.im/
 
 # 3DM(下载一些软件挺靠谱的，挺多软件都有更新时间也比较及时，除普通软件还有游戏、硬件一些模块)
 https://soft.3dmgame.com
